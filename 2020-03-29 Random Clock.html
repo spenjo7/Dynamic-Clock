@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>Random Clock by Jon Spencer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.00, maximum-scale=2.00, minimum-scale=1.00">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="clock.css">
+<style>
+	/* re-insert if needed later */
+</style>
+</head>
+<body>
+	<div id="outerDiv">
+		<div id="digital_clock" class="digital_clock pretty">12:00:00.0</div>	
+		<div class='analog_clock' id='analog_clock'></div>
+	</div>
+		<div class="buttonRow">
+			<div id="btn_1" class="button sybmol pretty" >&#9724;</div>
+			<div id="btn_2" class="button pretty" >Get a Random Time</div>
+			<div id="btn_3" class="button pretty" >Hide Digital Time</div>
+			<div id="btn_4" class="button pretty" >Hide Milliseconds Hand</div>
+		</div>
+	</div>
+<script src="circle_gen.js"></script>
+<script src="clock.js"></script>
+<script>
+// Start by instantiationg the clock 
+
+myClock = new Clock( 
+	document.getElementById('analog_clock'),
+	document.getElementById('digital_clock')
+	).init();
+
+
+//////////////////////// Local Project Scripts ///////////////////////////////////
+const btn_1 = document.getElementById('btn_1');
+const btn_2 = document.getElementById('btn_2');
+const btn_3 = document.getElementById('btn_3'); 
+const btn_4 = document.getElementById('btn_4');
+
+
+const toggleClockRunning = () => {
+	myClock.pauseStart();
+}
+
+const getRandomTime = () => {
+	myClock.randomize();
+};
+
+const toggleDigitalVisibility = () => {
+	let v_stat = myClock.showHideDigitalDisplay(); 
+	btn_3.innerText = `${v_stat? "Hide" : "Show"} Digital Time`;
+} 
+
+const toggleMsHandVisibility = () => {
+	let v_stat = myClock.showHideClockHands('millisecond').millisecond ;
+	btn_4.innerText = `${v_stat? "Hide" : "Show"} Milliseconds Hand`;
+	
+}
+
+////// Looping and Event Listeners ///////
+
+setInterval( () => {
+	btn_1.innerText = myClock.getIsRunning() ? "\u25FC" : "\u25BA" ;
+}, 250);
+
+btn_1.addEventListener('click',(event)=>{
+	event.preventDefault();
+	toggleClockRunning();
+})
+
+btn_2.addEventListener('click',(event)=>{
+	event.preventDefault();
+	getRandomTime();
+})
+
+btn_3.addEventListener('click',(event)=>{
+	event.preventDefault();
+	toggleDigitalVisibility();
+})
+
+btn_4.addEventListener('click',(event)=>{
+	event.preventDefault();
+	toggleMsHandVisibility();
+})
+
+
+window.addEventListener('keydown', (e) => {
+	if(![123,116].includes(e.keyCode)){ // Allows F12 and F5 to work normally
+		e.preventDefault();
+	}
+
+	/* 32 = space; 82 = r; 68 = d, 77 = m */
+	switch(e.keyCode){
+		case 32: // space pauses and stops the clock without reseting it 
+			toggleClockRunning();
+		break;
+		
+        case 68: // d shows or hides the digital time
+            toggleDigitalVisibility();
+        break;
+        
+		case 77: // m shows or hides the miliseconds hand 
+			toggleMsHandVisibility();
+		break;
+		
+		case 82: // r jumpst to a random time
+			getRandomTime();
+		break;
+
+		/*default: // keep for development purposes
+			console.log(e.keyCode);
+		break;*/
+	}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+@viewport {
+  zoom: 1.0;
+  min-zoom: 1.0;
+  max-zoom: 2.0;
+}
+
+body {
+    margin: auto;
+    width: 100vh;
+    max-width: 100vw;
+    min-width: 500px;
+	/*the above force the page to take up no more space than what is on the screen*/
+	background-color: white;
+	font-family: "Lucida Console", Monaco, monospace;
+}
+
+.analog_clock {
+	position: relative;
+	margin-top: 10%;
+	background-color: lightgrey;
+	width: 75%;
+	padding-top: 75%; /*This makes enforces a 1:1 ratio */ 
+}
+
+.analog_clock:before {	/*Goes above clock face, but below after*/
+	content:'';
+	position: absolute; /*absolute releative to the main element*/
+	background-color: white;
+	border-radius: 50%; /*makes a circle*/
+	/*These next 4 values are relative to the main element*/
+	width: 100%;
+	padding-top: 100%;
+	top: 0%;
+	left: 0%;
+	border: 1px black solid;
+}
+.analog_clock:after { /*should be the pin on the clock*/
+	content:'';
+	position: absolute; 
+	background-color: gold;
+	visibility: visible;
+	border-radius: 50%;
+	height: 2%; 
+	width: 2%;
+	left: 49%; /* Should be 50% minus half the width?*/
+	top: 49%; /* ditto*/
+}
+
+.analog_clock > div {
+/*These are just the common things that all the hands will need; might also use for numbers eventually*/
+	position: absolute;
+	visibility: visible;
+	top: 50%; /* 50% is center; use a before psuedo element for an overlap */
+	transform-origin: 50% 0%; /*Rotates hands from top-center; overlap is handled by :before psuedo elements*/
+	/*Naturally if we reuse this for numbers, they will not be rotating*/
+}
+
+.hand:before, .hand:after{ /*this is the boiler plate for the psuedo elements for hands*/
+	position: absolute;
+    visibility: visible;
+	content: ' ';
+	width: 100%; /*matches parent*/
+}
+
+.hand:before{ /*this is the overlap for the top of the hand*/
+	border-top-left-radius: 50%; /*these give the overflow a nice round look*/
+	border-top-right-radius: 50%;
+	background-color: black;
+	height: 10%; 
+	top: -10%; /*what ever percent the height is, you need the inverse top*/
+}
+
+.hand:after{ /*overlap for bottom of the hand*/
+	background-color: black;
+	border-bottom-left-radius: 50%; /*same as before, but rounded on the bottom*/
+	border-bottom-right-radius: 50%;
+	height: 10%; 
+	bottom: -10%; /* same as :before, but on the bottom*/
+}
+
+.noPseudo:before, .noPseudo:after {
+	visibility: hidden;
+}
+
+.hour { /*start with hours; also I should probably have the hands start at midnight*/
+	background-color: purple;
+	width: 4%; /*this appears as thickness of the hand */
+	height: 20%; /*this appears as the 'length of the hand'*/
+	left: 48%; /* Like the "center" this needs to be 50% - half it's width*/
+}
+
+.minute{
+	background-color: green;
+	width: 3%; /*this appears as thickness of the hand */
+	height: 30%; /*this appears as the 'length of the hand'*/
+	left: 48.5%;
+}
+
+.second{
+	background-color: red;
+	color:red;
+	width: 2%; /*this appears as thickness of the hand */
+	height: 40%; /*this appears as the 'length of the hand'*/
+	left: 49%;
+}
+
+.millisecond{
+	background-color: blue;
+	width: 1%; /*this appears as thickness of the hand */
+	height: 45%; /*this appears as the 'length of the hand'*/
+	left: 49.5%;
+}
+
+.millisecond:after{
+	background-color: gold;
+}
+
+.number{
+	position: absolute;
+	visibility: visible;
+	font-size: 3em;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.pretty {
+	background-color: rgba(123, 49, 123,0.8);
+	color: rgba(240, 237, 65, 1);
+	border: 3px dashed rgba(123, 49, 123,0.8);
+}
+
+.button{
+	border: gold 3px dashed;
+	margin: auto;
+	margin-left: 2%;
+	margin-right: 2%;
+	padding: 5px;
+	font-size: 1em;
+}
+
+.buttonRow{
+	/*background-color: lightgrey;*/
+	display: flex;
+	flex-direction: row;
+	justify-content:center;
+	overflow: visible;
+	margin-top: 1%;
+	min-height: 50px;
+}
+
+.digital_clock{
+	margin-top: 1%;
+	margin-bottom: -10%;
+	border: gold 3px dashed;
+	font-size: 4em;
+	padding: 1%;
+	padding-top: 1.75%;
+	vertical-align: middle;
+}
+
+.symbol{
+	text-align: center;
+	min-height: 18px;
+	min-width: 18px;
+	font-size: xx-large;
+	vertical-align: middle;	
+	padding: 5px;
+}
+
+#outerDiv{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	flex-direction: column;
+}
